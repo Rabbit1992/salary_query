@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Statistic, Spin, Select, Typography } from 'antd';
 import { DollarOutlined, FileOutlined } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
-import { employeeAPI, salaryAPI } from '../../services/api';
+import { salaryAPI } from '../../services/api';
 
 const { Option } = Select;
 const { Title } = Typography;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, Table, Select, Typography, Spin, Empty, message } from 'antd';
 import { salaryAPI } from '../../services/api';
 
@@ -11,26 +11,12 @@ const MySalary = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [years, setYears] = useState([]);
-  const [months, setMonths] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   
   // 从本地存储获取用户信息
   const user = JSON.parse(localStorage.getItem('user'));
   
-  useEffect(() => {
-    // 设置可选年份（当前年份及前两年）
-    const currentYear = new Date().getFullYear();
-    setYears([currentYear - 2, currentYear - 1, currentYear]);
-    
-    // 初始加载数据
-    fetchSalaryData();
-  }, []);
-  
-  // 当年份或月份变化时重新获取数据
-  useEffect(() => {
-    fetchSalaryData();
-  }, [selectedYear, selectedMonth]);
-  
-  const fetchSalaryData = async () => {
+  const fetchSalaryData = useCallback(async () => {
     if (!user || !user.employee_id) {
       message.error('用户信息不完整，请重新登录');
       return;
@@ -50,7 +36,21 @@ const MySalary = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, selectedYear, selectedMonth]);
+  
+  useEffect(() => {
+    // 设置可选年份（当前年份及前两年）
+    const currentYear = new Date().getFullYear();
+    setYears([currentYear - 2, currentYear - 1, currentYear]);
+    
+    // 初始加载数据
+    fetchSalaryData();
+  }, [fetchSalaryData]);
+  
+  // 当年份或月份变化时重新获取数据
+  useEffect(() => {
+    fetchSalaryData();
+  }, [fetchSalaryData]);
   
   const columns = [
     {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Button, Space, Modal, message, Input, Typography, Card, Select, Row, Col } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const SalaryList = () => {
 
 
   // 获取工资列表和员工列表
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       // 构建查询参数
@@ -40,11 +40,11 @@ const SalaryList = () => {
       message.error('获取数据失败');
       setLoading(false);
     }
-  };
+  }, [selectedYear, selectedMonth, selectedDepartment]);
 
   useEffect(() => {
     fetchData();
-  }, [selectedYear, selectedMonth, selectedDepartment]);
+  }, [fetchData]);
 
   // 删除工资记录
   const handleDelete = (id) => {

@@ -52,8 +52,10 @@ export const salaryAPI = {
   deleteSalary: (id) => api.delete(`/salary/salaries/${id}`)
 };
 
-export default {
+const apiService = {
   authAPI,
   employeeAPI,
   salaryAPI
 };
+
+export default apiService;

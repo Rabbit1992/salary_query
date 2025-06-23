@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Typography, Button, Dropdown, Space } from 'antd';
+import { Layout, Typography, Dropdown, Space } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,9 +20,9 @@ const Navbar = ({ user }) => {
     {
       key: 'logout',
       label: (
-        <a onClick={handleLogout}>
+        <button onClick={handleLogout} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
           <LogoutOutlined /> 退出登录
-        </a>
+        </button>
       ),
     },
   ];

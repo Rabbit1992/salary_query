@@ -22,15 +22,20 @@
 
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "set CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "vercel-build": "CI=false react-scripts build"
+    "vercel-build": "set CI=false && react-scripts build"
   },
   "eslintConfig": {
     "extends": [
       "react-app"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      "import/no-anonymous-default-export": "warn"
+    }
   },
   "browserslist": {
     "production": [

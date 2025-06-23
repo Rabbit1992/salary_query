@@ -29,19 +29,6 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// 根据用户角色重定向到不同的默认页面
-const RoleBasedRedirect = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  
-  if (user && user.role === 'admin') {
-    return <Navigate to="/" replace />;
-  } else if (user && user.role === 'employee') {
-    return <Navigate to="/my-salary" replace />;
-  } else {
-    return <Navigate to="/login" replace />;
-  }
-};
-
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Statistic, Spin, Select, Typography } from 'antd';
-import { DollarOutlined, FileOutlined, RiseOutlined } from '@ant-design/icons';
+import { DollarOutlined, RiseOutlined } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
 import { salaryAPI } from '../../services/api';
 
