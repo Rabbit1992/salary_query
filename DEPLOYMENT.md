@@ -34,7 +34,7 @@
 1. **Framework Preset**: 选择 "Other"
 2. **Root Directory**: 保持默认（根目录）
 3. **Build and Output Settings**:
-   - Build Command: `npm run init && cd client && npm run build`
+   - Build Command: `npm run vercel-build`
    - Output Directory: `client/build`
    - Install Command: `npm install`
 
@@ -101,15 +101,23 @@
 
 ### 常见问题
 
-1. **构建失败**:
+1. **构建失败 - "npm run vercel-build" 错误**:
+   - 确保根目录 `package.json` 包含 `vercel-build` 脚本
+   - 检查 `vercel.json` 配置是否正确
+   - 确认客户端目录下的依赖能正常安装
+   - 尝试在本地运行 `npm run vercel-build` 测试
+
+2. **依赖安装失败**:
    - 检查 `package.json` 中的依赖是否正确
    - 确保所有必要文件都已提交到 GitHub
+   - 删除 `node_modules` 和 `package-lock.json` 后重新安装
 
-2. **API 请求失败**:
+3. **API 请求失败**:
    - 检查 API 路径是否以 `/api/` 开头
    - 查看 Vercel 函数日志
+   - 确认服务器端代码没有语法错误
 
-3. **数据库问题**:
+4. **数据库问题**:
    - 确认数据库初始化代码正常运行
    - 考虑使用外部数据库服务
 
