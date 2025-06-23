@@ -107,17 +107,23 @@
    - 确认客户端目录下的依赖能正常安装
    - 尝试在本地运行 `npm run vercel-build` 测试
 
-2. **依赖安装失败**:
+2. **ESLint 版本过时警告**:
+   如果遇到 "eslint@8.57.1: This version is no longer supported" 警告：
+   - 删除客户端的 package-lock.json
+   - 确认客户端 `package.json` 中包含更新的 ESLint 配置
+   - 重新安装依赖
+
+3. **依赖安装失败**:
    - 检查 `package.json` 中的依赖是否正确
    - 确保所有必要文件都已提交到 GitHub
    - 删除 `node_modules` 和 `package-lock.json` 后重新安装
 
-3. **API 请求失败**:
+4. **API 请求失败**:
    - 检查 API 路径是否以 `/api/` 开头
    - 查看 Vercel 函数日志
    - 确认服务器端代码没有语法错误
 
-4. **数据库问题**:
+5. **数据库问题**:
    - 确认数据库初始化代码正常运行
    - 考虑使用外部数据库服务
 
