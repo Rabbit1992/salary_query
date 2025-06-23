@@ -103,6 +103,47 @@ npm run client
 - `PUT /api/salary/salaries/:id` - 更新工资记录
 - `DELETE /api/salary/salaries/:id` - 删除工资记录
 
+## 部署到 Vercel
+
+### 快速部署
+
+1. **运行部署准备脚本**:
+   ```bash
+   # Windows 用户
+   deploy.bat
+   
+   # Linux/Mac 用户
+   chmod +x deploy.sh
+   ./deploy.sh
+   ```
+
+2. **推送代码到 GitHub**:
+   ```bash
+   git add .
+   git commit -m "准备 Vercel 部署"
+   git push origin main
+   ```
+
+3. **在 Vercel 上部署**:
+   - 访问 [Vercel](https://vercel.com)
+   - 使用 GitHub 账户登录
+   - 导入您的 GitHub 仓库
+   - 按照配置完成部署
+
+### 详细部署指南
+
+查看 [DEPLOYMENT.md](./DEPLOYMENT.md) 获取完整的部署说明，包括:
+- 详细的部署步骤
+- 环境变量配置
+- 故障排除指南
+- 性能优化建议
+
+### 部署架构
+
+- **前端**: React 静态文件部署到 Vercel CDN
+- **后端**: Node.js API 作为 Serverless 函数运行
+- **数据库**: SQLite（注意：生产环境建议使用云数据库）
+
 ## 许可证
 
 ISC

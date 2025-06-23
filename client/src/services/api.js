@@ -49,23 +49,7 @@ export const salaryAPI = {
   updateSalary: (id, salaryData) => api.put(`/salary/salaries/${id}`, salaryData),
   
   // 删除工资记录
-  deleteSalary: (id) => api.delete(`/salary/salaries/${id}`),
-  
-  // 导入Excel工资数据
-  importSalaryExcel: (formData) => {
-    return api.post('/salary/import-excel', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-  },
-  
-  // 下载Excel模板
-  downloadTemplate: () => {
-    return api.get('/salary/download-template', {
-      responseType: 'blob'
-    });
-  }
+  deleteSalary: (id) => api.delete(`/salary/salaries/${id}`)
 };
 
 export default {

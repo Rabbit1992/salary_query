@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, Modal, message, Input, Typography, Card, Select, Row, Col, Upload } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, ExclamationCircleOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Modal, message, Input, Typography, Card, Select, Row, Col } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { salaryAPI, employeeAPI } from '../../services/api';
 
@@ -16,8 +16,7 @@ const SalaryList = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [importLoading, setImportLoading] = useState(false);
-  const [importModalVisible, setImportModalVisible] = useState(false);
+
 
   // 获取工资列表和员工列表
   const fetchData = async () => {
@@ -240,85 +239,7 @@ const SalaryList = () => {
   // 获取部门选项
   const departmentOptions = [...new Set(employees.map(emp => emp.department))];
 
-  // 处理 Excel 导入
-  const handleImport = async (options) => {
-    const { file, onSuccess, onError } = options;
-    setImportLoading(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
-    try {
-      const response = await salaryAPI.importSalaryExcel(formData);
-      message.success(`${response.data.success} 条工资记录导入成功`);
-      if (response.data.errors && response.data.errors.length > 0) {
-        Modal.warning({
-          title: '部分数据导入失败',
-          content: (
-            <div>
-              <p>以下行数据导入失败：</p>
-              <ul>
-                {response.data.errors.map((error, index) => (
-                  <li key={index}>{`行 ${error.row}: ${error.message}`}</li>
-                ))}
-              </ul>
-            </div>
-          ),
-        });
-      }
-      fetchData(); // 刷新数据
-      onSuccess && onSuccess(response.data);
-    } catch (error) {
-      console.error('导入失败:', error);
-      message.error('导入失败: ' + (error.response?.data?.message || error.message));
-      onError && onError(error);
-    } finally {
-      setImportLoading(false);
-      setImportModalVisible(false);
-    }
-  };
-
-  // 上传前检查文件类型
-  const beforeUpload = (file) => {
-    const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
-                    file.type === 'application/vnd.ms-excel';
-    if (!isExcel) {
-      message.error('只能上传 Excel 文件!');
-      return Upload.LIST_IGNORE;
-    }
-    return false; // 阻止自动上传
-  };
-
-  // 显示导入模态框
-  const showImportModal = () => {
-    setImportModalVisible(true);
-  };
-
-  // 关闭导入模态框
-  const handleImportCancel = () => {
-    setImportModalVisible(false);
-  };
-
-  // 下载Excel模板
-  const handleDownloadTemplate = async () => {
-    try {
-      const response = await salaryAPI.downloadTemplate();
-      
-      // 创建下载链接
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'salary_template.xlsx');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      
-      message.success('模板下载成功');
-    } catch (error) {
-      console.error('下载模板失败:', error);
-      message.error('下载模板失败');
-    }
-  };
 
   return (
     <div>
@@ -338,13 +259,7 @@ const SalaryList = () => {
                 添加工资记录
               </Button>
             </Link>
-            <Button 
-              type="primary" 
-              icon={<UploadOutlined />} 
-              onClick={showImportModal}
-            >
-              导入 Excel
-            </Button>
+
           </Space>
         </div>
 
@@ -400,48 +315,7 @@ const SalaryList = () => {
         />
       </Card>
 
-      {/* Excel 导入模态框 */}
-      <Modal
-        title="导入工资数据"
-        visible={importModalVisible}
-        onCancel={handleImportCancel}
-        footer={null}
-      >
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Button 
-            icon={<DownloadOutlined />} 
-            onClick={handleDownloadTemplate}
-            style={{ width: '100%', marginBottom: 8 }}
-          >
-            下载Excel模板
-          </Button>
-          <Upload
-            name="file"
-            accept=".xlsx,.xls"
-            beforeUpload={beforeUpload}
-            customRequest={handleImport}
-            showUploadList={false}
-          >
-            <Button 
-              icon={<UploadOutlined />} 
-              loading={importLoading}
-              type="primary" 
-              style={{ width: '100%', marginBottom: 16 }}
-            >
-              选择 Excel 文件
-            </Button>
-          </Upload>
-        </Space>
-        <div style={{ marginTop: 16 }}>
-          <p><strong>注意事项：</strong></p>
-          <ul>
-            <li>请使用标准模板导入数据</li>
-            <li>Excel 文件第一行必须是表头</li>
-            <li>必须包含：姓名、岗位、工作时间类型、考勤情况、基础工资、岗位工资、绩效工资、全勤、其他、加班情况（平日累计时间、双休日累计时间、法定节日累计时间）、加班费、合计、备注</li>
-            <li>员工姓名必须与系统中已有员工匹配</li>
-          </ul>
-        </div>
-      </Modal>
+
     </div>
   );
 };
